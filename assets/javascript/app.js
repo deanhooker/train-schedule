@@ -17,6 +17,7 @@ let firstTrainTime;
 let trainFrequency;
 let nextArrival;
 let minutesAway;
+let now = moment().format();
 
 //on submit click push data to firebase
 $('#submitBtn').on('click', function (event) {
@@ -57,11 +58,16 @@ database.ref().on('child_added', function (childSnapshot) {
     trainFrequency = childSnapshot.val().frequency;
 
     //test values
-    nextArrival = 0;
-    minutesAway = 0;
+    firstTimeConverted = moment(firstTrainTime, "hh:mm").subtract(1, "years");
+    currentTime = moment();
+    diffTime = moment().diff(moment(firstTimeConverted), "minutes");
+    tRemainder = diffTime % trainFrequency;
+    minutesAway = trainFrequency - tRemainder;
+    nextArrival = moment().add(minutesAway, "minutes");
+    nextArrivalFormatted = moment(nextArrival).format("hh:mm");
 
     //add variables to table
     $('#train-schedule > tbody').append("<tr><td>" + trainName + "</td><td>" + trainDestination + "</td><td>"
-        + trainFrequency + "</td><td>" + nextArrival + "</td><td>" + minutesAway + "</td></tr>");
+        + trainFrequency + "</td><td>" + nextArrivalFormatted + "</td><td>" + minutesAway + "</td></tr>");
 
 });
