@@ -68,6 +68,10 @@ database.ref().on('child_added', function (childSnapshot) {
 
     //add variables to table
     $('#train-schedule > tbody').append("<tr><td>" + trainName + "</td><td>" + trainDestination + "</td><td>"
-        + trainFrequency + "</td><td>" + nextArrivalFormatted + "</td><td>" + minutesAway + "</td></tr>");
+        + trainFrequency + "</td><td>" + nextArrivalFormatted + "</td><td>" + minutesAway + "</td><td><button type='button' class='btn btn-primary child-name=" + childSnapshot.key() + " id='remove-button'>Remove</button></td></tr>");
 
 });
+
+$(document).on("click", "#remove-button", function () {
+    console.log($(this).parent().parent().attr('child-name'));
+})
